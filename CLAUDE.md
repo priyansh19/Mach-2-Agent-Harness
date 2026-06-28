@@ -20,3 +20,13 @@ Mach2 is a multi-agent ReAct harness — specialized agents that talk to each ot
 ## UI Rule
 
 The React/TypeScript UI lives in `agent-ui/`. The assistant manages it fully — write and edit those files directly without asking.
+
+## UI Memory — Thinking & Critique Panel (Phase 6)
+
+User wants **opt-in visibility** into LLM reasoning and critic output:
+
+- **Button** opens a **scrollable panel** (flyout/drawer) — not inline in chat.
+- **Tabs**: Thinking trace (ReAct steps) | Critiques (structured critic items).
+- Main chat shows polished answers only; depth is on demand.
+- See `.cursor/rules/mach2-ui-critique.mdc` and README § Critic + § UI for full spec.
+- Backend should stream `thinking` and `critique` events; UI filters by agent, severity, round.
