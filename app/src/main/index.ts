@@ -58,7 +58,7 @@ ipcMain.handle('ollama:models', async () => {
 
 // ── Ollama: streaming chat ────────────────────────────────────────────────────
 ipcMain.on('ollama:chat', async (event, { model, messages }) => {
-  const trace = langfuse.trace({ name: 'ui-direct-chat', input: messages })
+  const trace = langfuse.trace({ name: 'ui-direct-chat', input: messages, tags: ['direct', 'ollama'], metadata: { model } })
   const generation = trace.generation({ name: 'ollama-completion', model, input: messages })
   let fullOutput = ''
 
@@ -103,6 +103,21 @@ ipcMain.on('ollama:chat', async (event, { model, messages }) => {
     generation.end({ output: String(err), level: 'ERROR' })
     await langfuse.flushAsync()
     event.sender.send('ollama:error', String(err))
+  }
+})
+
+// ── Harness: single-turn chat via FastAPI ─────────────────────────────────────
+ipcMain.handle('harness:chat', async (_event, { message, sessionId }) => {
+  try {
+    const res = await fetch('http://localhost:8000/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message, session_id: sessionId || '' })
+    })
+    if (!res.ok) return { error: `Harness server returned ${res.status}` }
+    return await res.json()
+  } catch (err) {
+    return { error: String(err) }
   }
 })
 

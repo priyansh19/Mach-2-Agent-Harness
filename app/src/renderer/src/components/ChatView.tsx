@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useChat } from '../hooks/useChat'
+import type { Mode } from '../hooks/useChat'
 import type { Chat, Message } from '../App'
 import MessageBubble from './MessageBubble'
 import ChatInput from './ChatInput'
@@ -11,47 +12,56 @@ type Props = {
   models: string[]
   onModelChange: (m: string) => void
   onUpdateChat: (msgs: Message[]) => void
+  mode: Mode
+  onModeChange: (m: Mode) => void
 }
 
-export default function ChatView({ chat, model, models, onModelChange, onUpdateChat }: Props) {
-  const { messages, setMessages, loading, send } = useChat(model)
+export default function ChatView({ chat, model, models, onModelChange, onUpdateChat, mode, onModeChange }: Props) {
+  const { messages, setMessages, loading, send } = useChat(model, mode)
   const bottomRef = useRef<HTMLDivElement>(null)
 
-  // When switching chats, restore that chat's message history into the hook
   useEffect(() => {
     setMessages(chat.messages)
   }, [chat.id])
 
-  // Bubble any message changes back up to App so the sidebar title updates
   useEffect(() => {
     if (messages.length > 0) onUpdateChat(messages)
   }, [messages])
 
-  // Auto-scroll to newest message
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
   return (
     <div className="chat-view">
-      {/* Model selector bar */}
-      {models.length > 0 && (
-        <div className="model-bar">
+      <div className="model-bar">
+        {models.length > 0 && (
           <select
             className="model-bar-select"
             value={model}
             onChange={(e) => onModelChange(e.target.value)}
           >
             {models.map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
+              <option key={m} value={m}>{m}</option>
             ))}
           </select>
+        )}
+        <div className="mode-toggle">
+          <button
+            className={`mode-btn${mode === 'direct' ? ' active' : ''}`}
+            onClick={() => onModeChange('direct')}
+          >
+            Direct
+          </button>
+          <button
+            className={`mode-btn${mode === 'harness' ? ' active' : ''}`}
+            onClick={() => onModeChange('harness')}
+          >
+            Harness
+          </button>
         </div>
-      )}
+      </div>
 
-      {/* Message thread */}
       <div className="messages-scroll">
         <div className="messages-inner">
           {messages.map((msg, i) => (

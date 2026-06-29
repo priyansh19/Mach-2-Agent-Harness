@@ -20,6 +20,10 @@ const api = {
       ipcRenderer.removeAllListeners('ollama:done')
       ipcRenderer.removeAllListeners('ollama:error')
     }
+  },
+  harness: {
+    chat: (message: string, sessionId: string) =>
+      ipcRenderer.invoke('harness:chat', { message, sessionId })
   }
 }
 

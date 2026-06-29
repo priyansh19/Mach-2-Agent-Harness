@@ -18,7 +18,10 @@
   gap: var(--space-md);
 }
 
-.spike-mark {
+.welcome-logo {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
   margin-bottom: var(--space-xs);
 }
 
@@ -105,4 +108,29 @@
 .model-select:focus {
   border-color: var(--primary);
   color: var(--text-primary);
+}
+
+/* ── Mode toggle ──────────────────────────────────────── */
+.mode-toggle {
+  display: flex;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.mode-btn {
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.mode-btn.active {
+  background: var(--primary);
+  color: #fff;
 }

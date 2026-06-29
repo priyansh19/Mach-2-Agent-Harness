@@ -30,6 +30,12 @@
   letter-spacing: 0.3px;
 }
 
+.titlebar-logo {
+  height: 20px;
+  width: auto;
+  object-fit: contain;
+}
+
 .titlebar-controls {
   display: flex;
   gap: 2px;

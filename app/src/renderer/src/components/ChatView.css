@@ -15,6 +15,31 @@
   flex-shrink: 0;
 }
 
+.mode-toggle {
+  display: flex;
+  margin-left: var(--space-sm);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.mode-btn {
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.mode-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
 .model-bar-select {
   padding: 5px 10px;
   background: var(--surface-card);

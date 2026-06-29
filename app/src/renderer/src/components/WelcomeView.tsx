@@ -1,3 +1,5 @@
+import logo from '../assets/logo.png'
+import type { Mode } from '../hooks/useChat'
 import './WelcomeView.css'
 
 const SUGGESTIONS = [
@@ -12,24 +14,20 @@ type Props = {
   model: string
   models: string[]
   onModelChange: (m: string) => void
+  mode: Mode
+  onModeChange: (m: Mode) => void
 }
 
-export default function WelcomeView({ onNewChat, model, models, onModelChange }: Props) {
+export default function WelcomeView({ onNewChat, model, models, onModelChange, mode, onModeChange }: Props) {
   return (
     <div className="welcome">
       <div className="welcome-hero">
-        {/* Anthropic-style spike mark */}
-        <svg className="spike-mark" width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <path
-            d="M16 0L18.4 13.6L32 16L18.4 18.4L16 32L13.6 18.4L0 16L13.6 13.6L16 0Z"
-            fill="#cc785c"
-          />
-        </svg>
+        <img src={logo} alt="Mach2" className="welcome-logo" />
         <h1 className="welcome-headline">
           What can I help<br />you with?
         </h1>
         <p className="welcome-sub">
-          Running on <strong>{model || 'Ollama'}</strong>
+          Running on <strong>{model || 'Ollama'}</strong> · <strong>{mode === 'harness' ? 'Harness' : 'Direct'}</strong> mode
         </p>
       </div>
 
@@ -51,11 +49,23 @@ export default function WelcomeView({ onNewChat, model, models, onModelChange }:
             onChange={(e) => onModelChange(e.target.value)}
           >
             {models.map((m) => (
-              <option key={m} value={m}>
-                {m}
-              </option>
+              <option key={m} value={m}>{m}</option>
             ))}
           </select>
+          <div className="mode-toggle">
+            <button
+              className={`mode-btn${mode === 'direct' ? ' active' : ''}`}
+              onClick={() => onModeChange('direct')}
+            >
+              Direct
+            </button>
+            <button
+              className={`mode-btn${mode === 'harness' ? ' active' : ''}`}
+              onClick={() => onModeChange('harness')}
+            >
+              Harness
+            </button>
+          </div>
         </div>
       )}
     </div>

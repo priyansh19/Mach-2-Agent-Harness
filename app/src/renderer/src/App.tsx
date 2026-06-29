@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import Sidebar from './components/Sidebar'
 import WelcomeView from './components/WelcomeView'
 import ChatView from './components/ChatView'
+import logo from './assets/logo.png'
+import type { Mode } from './hooks/useChat'
 import './App.css'
 
 export type Message = { role: 'user' | 'assistant'; content: string }
@@ -12,6 +14,7 @@ export default function App() {
   const [activeChatId, setActiveChatId] = useState<string | null>(null)
   const [model, setModel] = useState('gemma4:latest')
   const [models, setModels] = useState<string[]>([])
+  const [mode, setMode] = useState<Mode>('direct')
 
   useEffect(() => {
     window.api.ollama.models().then((m) => {
@@ -43,10 +46,7 @@ export default function App() {
       {/* Frameless title bar — draggable except the window control buttons */}
       <div className="titlebar" style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}>
         <span className="titlebar-brand">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M6 0L7.2 4.8L12 6L7.2 7.2L6 12L4.8 7.2L0 6L4.8 4.8L6 0Z" fill="#cc785c" />
-          </svg>
-          Mach2
+          <img src={logo} alt="Mach2" className="titlebar-logo" />
         </span>
         <div
           className="titlebar-controls"
@@ -83,6 +83,8 @@ export default function App() {
               models={models}
               onModelChange={setModel}
               onUpdateChat={(msgs) => updateChat(activeChat.id, msgs)}
+              mode={mode}
+              onModeChange={setMode}
             />
           ) : (
             <WelcomeView
@@ -90,6 +92,8 @@ export default function App() {
               model={model}
               models={models}
               onModelChange={setModel}
+              mode={mode}
+              onModeChange={setMode}
             />
           )}
         </main>

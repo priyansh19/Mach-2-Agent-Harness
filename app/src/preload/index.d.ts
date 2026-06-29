@@ -14,6 +14,9 @@ declare global {
         onError: (cb: (err: string) => void) => void
         removeAllListeners: () => void
       }
+      harness: {
+        chat: (message: string, sessionId: string) => Promise<{ answer?: string; session_id?: string; error?: string }>
+      }
     }
   }
 }

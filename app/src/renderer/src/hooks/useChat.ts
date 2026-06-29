@@ -1,24 +1,45 @@
 import { useState, useCallback, useRef } from 'react'
 import type { Message } from '../App'
 
-export function useChat(model: string) {
+export type Mode = 'direct' | 'harness'
+
+export function useChat(model: string, mode: Mode = 'direct') {
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(false)
   const bufferRef = useRef('')
+  const sessionIdRef = useRef('')
 
   const send = useCallback(
-    (text: string) => {
+    async (text: string) => {
       const userMsg: Message = { role: 'user', content: text }
       const history = [...messages, userMsg]
-
-      // Append user message + empty assistant placeholder
       setMessages([...history, { role: 'assistant', content: '' }])
       setLoading(true)
-      bufferRef.current = ''
 
+      if (mode === 'harness') {
+        const result = await window.api.harness.chat(text, sessionIdRef.current)
+        if (result.error) {
+          setMessages((prev) => {
+            const updated = [...prev]
+            updated[updated.length - 1] = { role: 'assistant', content: `⚠️ ${result.error}` }
+            return updated
+          })
+        } else {
+          sessionIdRef.current = result.session_id ?? ''
+          setMessages((prev) => {
+            const updated = [...prev]
+            updated[updated.length - 1] = { role: 'assistant', content: result.answer ?? '' }
+            return updated
+          })
+        }
+        setLoading(false)
+        return
+      }
+
+      // Direct mode — streaming
+      bufferRef.current = ''
       window.api.ollama.removeAllListeners()
 
-      // Each chunk arrives as a token string — append to the buffer, update last message
       window.api.ollama.onChunk((chunk) => {
         bufferRef.current += chunk
         setMessages((prev) => {
@@ -45,8 +66,8 @@ export function useChat(model: string) {
 
       window.api.ollama.chat(model, history)
     },
-    [messages, model]
+    [messages, model, mode]
   )
 
-  return { messages, setMessages, loading, send }
+  return { messages, setMessages, loading, send, sessionIdRef }
 }
