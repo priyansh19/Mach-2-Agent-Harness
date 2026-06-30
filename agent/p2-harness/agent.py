@@ -8,8 +8,8 @@ MODEL = "ornith:9b"
 
 SYSTEM_PROMPT = (Path(__file__).parent.parent.parent / "docs" / "ornith-system-prompt.md").read_text(encoding="utf-8")
 langfuse = Langfuse(
-    public_key="pk-lf-f1ff4a91-5511-46d9-b3f2-f3db49112808",
-    secret_key="sk-lf-6c61058f-a568-430f-93e6-598415159fd0",
+    public_key="pk-lf-df92732e-8905-4eea-a561-4a906b963471",
+    secret_key="sk-lf-42a96bc1-2d67-4741-a7c7-598c4a2506a9",
     host="http://localhost:3000"
 )
 

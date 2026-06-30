@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent / "agent" / "p2-harness"))
-from agent import run_agent, SYSTEM_PROMPT
+from agent import run_agent, SYSTEM_PROMPT, langfuse
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,6 +12,11 @@ import uuid
 class ChatRequest(BaseModel):
     message: str
     session_id: str = ""
+
+class DirectRequest(BaseModel):
+    messages: list[dict]
+    model: str = "ornith:9b"
+
 
 app = FastAPI()
 app.add_middleware(
@@ -37,6 +42,15 @@ def chat(req: ChatRequest):
     sessions[sid].append({"role": "assistant", "content": answer})
     return {"answer": answer, "session_id": sid}
 
+@app.post("/direct")
+def direct(req: DirectRequest):
+    import ollama as ollama_lib
+    trace = langfuse.trace(name="ui-direct", input=req.messages[-1]["content"], tags=["direct"])
+    resp = ollama_lib.chat(model=req.model, messages=req.messages)
+    answer = resp["message"]["content"]
+    trace.update(output=answer)
+    langfuse.flush()
+    return {"answer": answer}
 
 
 

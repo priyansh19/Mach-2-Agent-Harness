@@ -1,0 +1,111 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ── Topbar ── */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 0 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.topbar-logo {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+}
+
+.topbar-model {
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: auto;
+}
+
+.clear-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: var(--radius);
+  padding: 3px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: var(--font);
+}
+.clear-btn:hover { color: var(--red); border-color: var(--red); }
+
+/* ── Mode toggle ── */
+.mode-toggle {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.mode-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  padding: 4px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: background 0.15s, color 0.15s;
+}
+.mode-btn:hover  { background: var(--border); color: var(--text); }
+.mode-btn.active { background: var(--primary); color: #fff; }
+
+/* ── Body (chat + inspector) ── */
+.body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Input bar ── */
+.input-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+.chat-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  padding: 8px 12px;
+  outline: none;
+}
+.chat-input:focus { border-color: var(--primary); }
+.chat-input:disabled { opacity: 0.5; }
+.chat-input::placeholder { color: var(--muted); }
+
+.send-btn {
+  background: var(--primary);
+  border: none;
+  border-radius: var(--radius);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.send-btn:disabled { opacity: 0.4; cursor: default; }

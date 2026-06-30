@@ -21,8 +21,6 @@ services:
       POSTGRES_DB: postgres
       TZ: UTC
       PGTZ: UTC
-    ports:
-      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -30,8 +28,6 @@ services:
     image: redis:7
     restart: unless-stopped
     command: --requirepass myredissecret --maxmemory-policy noeviction
-    ports:
-      - "127.0.0.1:6379:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -48,9 +44,6 @@ services:
       CLICKHOUSE_DB: default
       CLICKHOUSE_USER: clickhouse
       CLICKHOUSE_PASSWORD: clickhouse
-    ports:
-      - "127.0.0.1:8123:8123"
-      - "127.0.0.1:9000:9000"
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - clickhouse_logs:/var/log/clickhouse-server
@@ -95,8 +88,6 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
-    ports:
-      - "127.0.0.1:3030:3030"
     environment: &langfuse-env
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
       NEXTAUTH_URL: http://localhost:3000

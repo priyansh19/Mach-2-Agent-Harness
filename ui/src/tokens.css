@@ -1,0 +1,30 @@
+:root {
+  --bg:        #0d0d0f;
+  --surface:   #161618;
+  --border:    #2a2a2e;
+  --primary:   #7c6af7;
+  --text:      #e8e8ea;
+  --muted:     #666676;
+  --green:     #4ade80;
+  --red:       #f87171;
+  --cyan:      #38bdf8;
+  --radius:    8px;
+  --font:      'SF Mono', 'Cascadia Code', 'Fira Code', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#root { height: 100vh; display: flex; flex-direction: column; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

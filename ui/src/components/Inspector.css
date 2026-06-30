@@ -1,0 +1,24 @@
+.inspector {
+  width: 38%;
+  min-width: 220px;
+  border-left: 1px solid var(--border);
+  padding: 16px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.inspector-title {
+  color: var(--primary);
+  margin-bottom: 14px;
+  font-size: 12px;
+}
+
+.inspector-body { display: flex; flex-direction: column; gap: 6px; }
+
+.insp-row { display: flex; justify-content: space-between; font-size: 12px; }
+.insp-label { color: var(--muted); }
+.insp-value { color: var(--text); text-align: right; }
+
+.insp-dim { color: var(--muted); font-size: 12px; }
+.insp-mt  { margin-top: 10px; }
+.insp-error { color: var(--red); font-size: 12px; word-break: break-all; }
